@@ -40,8 +40,6 @@ public class personaControler {
             return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
         if(personaDto.getEdad()==0 || personaDto.getEdad()<0 )
             return new ResponseEntity(new Mensaje("La edad debe ser mayor que 0"), HttpStatus.BAD_REQUEST);
-        if(personaService.existsByNombre(personaDto.getNombre()))
-            return new ResponseEntity(new Mensaje("Ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         persona persona = new persona(personaDto.getNombre(), personaDto.getEdad());
         personaService.save(persona);
         return new ResponseEntity(new Mensaje("Persona Agregada"), HttpStatus.OK);
@@ -51,8 +49,6 @@ public class personaControler {
     public ResponseEntity<?> update(@PathVariable("id")int id, @RequestBody personaDto personaDto){
         if(!personaService.existsById(id))
             return new ResponseEntity(new Mensaje("No existe"), HttpStatus.NOT_FOUND);
-        if(personaService.existsByNombre(personaDto.getNombre()) && personaService.getByNombre(personaDto.getNombre()).get().getId() != id)
-            return new ResponseEntity(new Mensaje("Ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         if(StringUtils.isBlank(personaDto.getNombre()))
             return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
         if(personaDto.getEdad()==0 || personaDto.getEdad()<0 )
